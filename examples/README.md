@@ -719,7 +719,7 @@ Alternatively, you can install Android Studio.
 To build an Android app, you first need to build shared object files for the target architecture with `cargo-ndk`:
 
 ```sh
-cargo ndk build --link-libcxx-shared -t <target_name> --release -o <project_path>/android/app/src/main/jniLibs
+cargo ndk build --link-libcxx-shared -t <target_name> --release -o <project_path>/app/src/main/jniLibs
 ```
 
 For example, to compile to a 64-bit ARM platform:
