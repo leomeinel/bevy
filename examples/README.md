@@ -686,6 +686,10 @@ Example | Description
 
 ### Android
 
+Example | File | Description
+--- | --- | ---
+`mobile` | [`mobile/src/lib.rs`](./mobile/src/lib.rs) | A 3d Scene with a button and playing sound
+
 #### Setup
 
 ```sh
@@ -767,6 +771,10 @@ bevy = { version = "0.19", default-features = false, features = ["android-native
 
 ### iOS
 
+Example | File | Description
+--- | --- | ---
+`mobile` | [`mobile/src/lib.rs`](./mobile/src/lib.rs) | A 3d Scene with a button and playing sound
+
 #### Setup
 
 You need to install the correct rust targets:
@@ -804,10 +812,6 @@ open bevy_mobile_example.xcodeproj/
 
 which will open xcode. You then must push the zoom zoom play button and wait
 for the magic.
-
-Example | File | Description
---- | --- | ---
-`ios` | [`mobile/src/lib.rs`](./mobile/src/lib.rs) | A 3d Scene with a button and playing sound
 
 ### Wasm
 
