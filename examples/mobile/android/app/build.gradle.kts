@@ -46,11 +46,6 @@ android {
     buildFeatures {
         prefab = true
     }
-    packaging {
-        // https://developer.android.com/reference/tools/gradle-api/9.1/com/android/build/api/dsl/JniLibsPackaging
-        jniLibs.excludes.add("lib/*/libdummy.so")
-        jniLibs.pickFirsts.add("lib/*/libc++_shared.so")
-    }
     // https://developer.android.com/reference/tools/gradle-api/9.1/com/android/build/api/dsl/AndroidSourceSet
     sourceSets {
         getByName("main") {
