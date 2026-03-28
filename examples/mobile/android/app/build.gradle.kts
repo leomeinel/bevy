@@ -22,25 +22,11 @@ android {
         versionCode = 1
         // NOTE: Update with full semantic version on each release
         versionName = "0.0.0"
-        // https://developer.android.com/reference/tools/gradle-api/9.1/com/android/build/api/variant/ExternalNativeBuild
-        // NOTE: We need this, otherwise libc++_shared.so will not be inserted
-        @Suppress("UnstableApiUsage")
-        externalNativeBuild {
-            cmake {
-                arguments("-DANDROID_STL=c++_shared")
-            }
-        }
         // https://developer.android.com/reference/tools/gradle-api/9.1/com/android/build/api/dsl/Ndk
         ndk {
             abiFilters.addAll(listOf("arm64-v8a", "armeabi-v7a", "x86_64"))
         }
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-    // https://developer.android.com/reference/tools/gradle-api/9.1/com/android/build/api/dsl/ExternalNativeBuild
-    externalNativeBuild {
-        cmake {
-            path = file("CMakeLists.txt")
-        }
     }
     // https://developer.android.com/reference/tools/gradle-api/9.1/com/android/build/api/dsl/BuildType
     buildTypes {
