@@ -33,61 +33,62 @@ git checkout v0.4.0
 
 ## Table of Contents
 
-1. [Examples](#examples)
-   1. [Table of Contents](#table-of-contents)
-   2. [The Bare Minimum](#the-bare-minimum)
-      1. [Hello, World!](#hello-world)
-   3. [Cross-Platform Examples](#cross-platform-examples)
-      1. [2D Rendering](#2d-rendering)
-      2. [3D Rendering](#3d-rendering)
-      3. [Animation](#animation)
-      4. [Application](#application)
-      5. [Assets](#assets)
-      6. [Async Tasks](#async-tasks)
-      7. [Audio](#audio)
-      8. [Camera](#camera)
-      9. [Dev tools](#dev-tools)
-      10. [Diagnostics](#diagnostics)
-      11. [ECS (Entity Component System)](#ecs-entity-component-system)
-      12. [Embedded](#embedded)
-      13. [Games](#games)
-      14. [Gizmos](#gizmos)
-      15. [Helpers](#helpers)
-      16. [Input](#input)
-      17. [Math](#math)
-      18. [Movement](#movement)
-      19. [Picking](#picking)
-      20. [Reflection](#reflection)
-      21. [Remote Protocol](#remote-protocol)
-      22. [Scene](#scene)
-      23. [Shaders](#shaders)
-      24. [Shaders Advanced](#shaders-advanced)
-      25. [State](#state)
-      26. [Stress Tests](#stress-tests)
-      27. [Time](#time)
-      28. [Tools](#tools)
-      29. [Transforms](#transforms)
-      30. [UI (User Interface)](#ui-user-interface)
-      31. [Usage](#usage)
-      32. [Window](#window)
-      33. [glTF](#gltf)
-   4. [Tests](#tests)
-   5. [Platform-Specific Examples](#platform-specific-examples)
-      1. [Android](#android)
-         1. [Setup](#setup)
-         2. [Build \& Run](#build--run)
-         3. [Debugging](#debugging)
-         4. [Old phones](#old-phones)
-      2. [iOS](#ios)
-         1. [Setup](#setup-1)
-         2. [Build \& Run](#build--run-1)
-      3. [Wasm](#wasm)
-         1. [Setup](#setup-2)
-         2. [Build \& Run](#build--run-2)
-            1. [WebGL2 and WebGPU](#webgl2-and-webgpu)
-         3. [Audio in the browsers](#audio-in-the-browsers)
-         4. [Optimizing](#optimizing)
-         5. [Loading Assets](#loading-assets)
+- [Examples](#examples)
+  - [Table of Contents](#table-of-contents)
+- [The Bare Minimum](#the-bare-minimum)
+  - [Hello, World!](#hello-world)
+- [Cross-Platform Examples](#cross-platform-examples)
+  - [2D Rendering](#2d-rendering)
+  - [3D Rendering](#3d-rendering)
+  - [Animation](#animation)
+  - [Application](#application)
+  - [Assets](#assets)
+  - [Async Tasks](#async-tasks)
+  - [Audio](#audio)
+  - [Camera](#camera)
+  - [Dev tools](#dev-tools)
+  - [Diagnostics](#diagnostics)
+  - [ECS (Entity Component System)](#ecs-entity-component-system)
+  - [Embedded](#embedded)
+  - [Games](#games)
+  - [Gizmos](#gizmos)
+  - [Helpers](#helpers)
+  - [Input](#input)
+  - [Math](#math)
+  - [Movement](#movement)
+  - [Picking](#picking)
+  - [Reflection](#reflection)
+  - [Remote Protocol](#remote-protocol)
+  - [Scene](#scene)
+  - [Shaders](#shaders)
+  - [Shaders Advanced](#shaders-advanced)
+  - [State](#state)
+  - [Stress Tests](#stress-tests)
+  - [Time](#time)
+  - [Tools](#tools)
+  - [Transforms](#transforms)
+  - [UI (User Interface)](#ui-user-interface)
+  - [Usage](#usage)
+  - [Window](#window)
+  - [glTF](#gltf)
+
+- [Tests](#tests)
+- [Platform-Specific Examples](#platform-specific-examples)
+  - [Android](#android)
+    - [Setup](#setup)
+    - [Build & Run](#build--run)
+    - [Debugging](#debugging)
+    - [Old phones](#old-phones)
+  - [iOS](#ios)
+    - [Setup](#setup-1)
+    - [Build & Run](#build--run-1)
+  - [Wasm](#wasm)
+    - [Setup](#setup-2)
+    - [Build & Run](#build--run-2)
+    - [WebGL2 and WebGPU](#webgl2-and-webgpu)
+    - [Audio in the browsers](#audio-in-the-browsers)
+    - [Optimizing](#optimizing)
+    - [Loading Assets](#loading-assets)
 
 ## The Bare Minimum
 
@@ -769,13 +770,100 @@ adb uninstall org.bevyengine.example
 
 In its example, Bevy uses Android API 36 as `targetSdk` to be able to benefit from security and performance improvements. For backwards compatibility, the example specifies Android API 31 as `minSdk`. This approach is recommended in the [Android Developers documentation](https://developer.android.com/google/play/requirements/target-sdk#why-target).
 
-Users of older phones may want to use an older API when testing. By default, Bevy uses [`GameActivity`](https://developer.android.com/games/agdk/game-activity), which only works for Android API 31 and higher, so if you want to use an older API, you need to switch to [`NativeActivity`](https://developer.android.com/reference/android/app/NativeActivity).
+Bevy uses [`GameActivity`](https://developer.android.com/games/agdk/game-activity), which only works for Android API 31 and higher. If you want to use an older API, you need to switch to [`NativeActivity`](https://developer.android.com/reference/android/app/NativeActivity).
 
-To use `NativeActivity`, you need to write a custom `MainActivity.kt` using `NativeActivity` instead of `GameActivity` and add the `android-native-activity` feature to Bevy in your `Cargo.toml` like this:
+You can follow the following steps to switch from [`GameActivity`](https://developer.android.com/games/agdk/game-activity) to [`NativeActivity`](https://developer.android.com/reference/android/app/NativeActivity):
 
-```toml
-bevy = { version = "0.19", features = ["android-native-activity"] }
-```
+1. Replace `android-game-activity` feature with `android-native-activity` in `Cargo.toml`.
+    <details>
+    <summary>Required Changes (Example)</summary>
+
+    ```diff
+    --- a/examples/mobile/Cargo.toml
+    +++ b/examples/mobile/Cargo.toml
+    [dependencies]
+    -bevy = { version = "0.19", features = ["android-game-activity"] }
+    +bevy = { version = "0.19", features = ["android-native-activity"] }
+    ```
+
+    </details>
+2. Remove unneeded dependencies from `android/gradle/libs.versions.toml`.
+    <details>
+    <summary>Required Changes (Example)</summary>
+
+    ```diff
+    --- a/examples/mobile/android/gradle/libs.versions.toml
+    +++ b/examples/mobile/android/gradle/libs.versions.toml
+    [versions]
+    agp = "9.1.0"
+    appcompat = "1.7.1"
+    core = "1.18.0"
+    -gamesActivity = "4.4.0" # Note: This must be compatible with `android-activity` crate used by bevy.
+    material = "1.13.0"
+    coreKtx = "1.18.0"
+
+    [libraries]
+    appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+    core = { group = "androidx.core", name = "core", version.ref = "core" }
+    -games-activity = { group = "androidx.games", name = "games-activity", version.ref = "gamesActivity" }
+    material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+    core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+    ```
+
+    </details>
+3. Change `minSdk` (optional) and remove unnecessary dependencies in `android/app/build.gradle.kts`.
+    <details>
+    <summary>Required Changes (Example)</summary>
+
+    ```diff
+    --- a/examples/mobile/android/app/build.gradle.kts
+    +++ b/examples/mobile/android/app/build.gradle.kts
+        defaultConfig {
+            applicationId = "org.bevyengine.example"
+    -        minSdk = 31
+    +        minSdk = 26
+            targetSdk = 36
+            // NOTE: Increase by 1 on each release
+            versionCode = 1
+    --- a/examples/mobile/android/app/build.gradle.kts
+    +++ b/examples/mobile/android/app/build.gradle.kts
+    dependencies {
+        implementation(libs.appcompat)
+        implementation(libs.core)
+        implementation(libs.material)
+    -    implementation(libs.games.activity)
+        implementation(libs.core.ktx)
+    }
+    ```
+
+    </details>
+4. Use `NativeActivity` in `MainActivity.kt`.
+    <details>
+    <summary>Required Changes (Example)</summary>
+
+    ```diff
+    --- a/examples/mobile/android/app/src/main/kotlin/org/bevyengine/example/MainActivity.kt
+    +++ b/examples/mobile/android/app/src/main/kotlin/org/bevyengine/example/MainActivity.kt
+    package org.bevyengine.example
+
+    +import android.app.NativeActivity
+    import android.os.Bundle
+    import androidx.core.view.WindowCompat
+    import androidx.core.view.WindowInsetsCompat
+    import androidx.core.view.WindowInsetsControllerCompat
+    -import com.google.androidgamesdk.GameActivity
+
+    /**
+    * Load rust library and handle android specifics to integrate with it.
+    *
+    *
+    * The library is loaded at class initialization and provided by jniLibs.
+    */
+    -class MainActivity : GameActivity() {
+    +class MainActivity : NativeActivity() {
+    ```
+
+    </details>
 
 ### iOS
 
@@ -802,7 +890,6 @@ Using bash:
 ```sh
 cd examples/mobile
 make run
-```
 
 In an ideal world, this will boot up, install and run the app for the first
 iOS simulator in your `xcrun simctl list devices`. If this fails, you can

@@ -160,13 +160,100 @@ adb uninstall org.bevyengine.example
 
 In its example, Bevy uses Android API 36 as `targetSdk` to be able to benefit from security and performance improvements. For backwards compatibility, the example specifies Android API 31 as `minSdk`. This approach is recommended in the [Android Developers documentation](https://developer.android.com/google/play/requirements/target-sdk#why-target).
 
-Users of older phones may want to use an older API when testing. By default, Bevy uses [`GameActivity`](https://developer.android.com/games/agdk/game-activity), which only works for Android API 31 and higher, so if you want to use an older API, you need to switch to [`NativeActivity`](https://developer.android.com/reference/android/app/NativeActivity).
+Bevy uses [`GameActivity`](https://developer.android.com/games/agdk/game-activity), which only works for Android API 31 and higher. If you want to use an older API, you need to switch to [`NativeActivity`](https://developer.android.com/reference/android/app/NativeActivity).
 
-To use `NativeActivity`, you need to write a custom `MainActivity.kt` using `NativeActivity` instead of `GameActivity` and add the `android-native-activity` feature to Bevy in your `Cargo.toml` like this:
+You can follow the following steps to switch from [`GameActivity`](https://developer.android.com/games/agdk/game-activity) to [`NativeActivity`](https://developer.android.com/reference/android/app/NativeActivity):
 
-```toml
-bevy = { version = "0.19", features = ["android-native-activity"] }
-```
+1. Replace `android-game-activity` feature with `android-native-activity` in `Cargo.toml`.
+    <details>
+    <summary>Required Changes (Example)</summary>
+
+    ```diff
+    --- a/examples/mobile/Cargo.toml
+    +++ b/examples/mobile/Cargo.toml
+    [dependencies]
+    -bevy = { version = "0.19", features = ["android-game-activity"] }
+    +bevy = { version = "0.19", features = ["android-native-activity"] }
+    ```
+
+    </details>
+2. Remove unneeded dependencies from `android/gradle/libs.versions.toml`.
+    <details>
+    <summary>Required Changes (Example)</summary>
+
+    ```diff
+    --- a/examples/mobile/android/gradle/libs.versions.toml
+    +++ b/examples/mobile/android/gradle/libs.versions.toml
+    [versions]
+    agp = "9.1.0"
+    appcompat = "1.7.1"
+    core = "1.18.0"
+    -gamesActivity = "4.4.0" # Note: This must be compatible with `android-activity` crate used by bevy.
+    material = "1.13.0"
+    coreKtx = "1.18.0"
+
+    [libraries]
+    appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+    core = { group = "androidx.core", name = "core", version.ref = "core" }
+    -games-activity = { group = "androidx.games", name = "games-activity", version.ref = "gamesActivity" }
+    material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+    core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+    ```
+
+    </details>
+3. Change `minSdk` (optional) and remove unnecessary dependencies in `android/app/build.gradle.kts`.
+    <details>
+    <summary>Required Changes (Example)</summary>
+
+    ```diff
+    --- a/examples/mobile/android/app/build.gradle.kts
+    +++ b/examples/mobile/android/app/build.gradle.kts
+        defaultConfig {
+            applicationId = "org.bevyengine.example"
+    -        minSdk = 31
+    +        minSdk = 26
+            targetSdk = 36
+            // NOTE: Increase by 1 on each release
+            versionCode = 1
+    --- a/examples/mobile/android/app/build.gradle.kts
+    +++ b/examples/mobile/android/app/build.gradle.kts
+    dependencies {
+        implementation(libs.appcompat)
+        implementation(libs.core)
+        implementation(libs.material)
+    -    implementation(libs.games.activity)
+        implementation(libs.core.ktx)
+    }
+    ```
+
+    </details>
+4. Use `NativeActivity` in `MainActivity.kt`.
+    <details>
+    <summary>Required Changes (Example)</summary>
+
+    ```diff
+    --- a/examples/mobile/android/app/src/main/kotlin/org/bevyengine/example/MainActivity.kt
+    +++ b/examples/mobile/android/app/src/main/kotlin/org/bevyengine/example/MainActivity.kt
+    package org.bevyengine.example
+
+    +import android.app.NativeActivity
+    import android.os.Bundle
+    import androidx.core.view.WindowCompat
+    import androidx.core.view.WindowInsetsCompat
+    import androidx.core.view.WindowInsetsControllerCompat
+    -import com.google.androidgamesdk.GameActivity
+
+    /**
+    * Load rust library and handle android specifics to integrate with it.
+    *
+    *
+    * The library is loaded at class initialization and provided by jniLibs.
+    */
+    -class MainActivity : GameActivity() {
+    +class MainActivity : NativeActivity() {
+    ```
+
+    </details>
 
 ### iOS
 
@@ -193,7 +280,6 @@ Using bash:
 ```sh
 cd examples/mobile
 make run
-```
 
 In an ideal world, this will boot up, install and run the app for the first
 iOS simulator in your `xcrun simctl list devices`. If this fails, you can
