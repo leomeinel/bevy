@@ -1,5 +1,6 @@
 package org.bevyengine.example
 
+import android.os.Bundle
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -13,13 +14,23 @@ import com.google.androidgamesdk.GameActivity
  */
 class MainActivity : GameActivity() {
     /**
-     * Hide system UI if the app window is focused.
+     * Enable edge to edge when the activity is starting.
      *
      *
-     * Called when the current Window of the activity gains or loses focus.
+     * This is not done by default if the app targets an Android SDK pre 35.
+     */
+    override fun onCreate(savedInstanceState: Bundle?) {
+        // Call parent class implementation of onCreate.
+        super.onCreate(savedInstanceState)
+
+        WindowCompat.enableEdgeToEdge(window)
+    }
+
+    /**
+     * Hide system UI if the current window gains or loses focus.
      */
     override fun onWindowFocusChanged(hasFocus: Boolean) {
-        // Call parent class implementation of onWindowFocusChanged to make sure that we are updating correctly.
+        // Call parent class implementation of onWindowFocusChanged.
         super.onWindowFocusChanged(hasFocus)
 
         if (hasFocus) {
