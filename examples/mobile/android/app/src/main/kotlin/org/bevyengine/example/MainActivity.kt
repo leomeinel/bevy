@@ -17,7 +17,7 @@ class MainActivity : GameActivity() {
      * Enable edge to edge when the activity is starting.
      *
      *
-     * This is not done by default if the app targets an Android SDK pre 35.
+     * This is the default behavior after Android SDK 34 but is needed for backwards compatibility.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         // Call parent class implementation of onCreate.
