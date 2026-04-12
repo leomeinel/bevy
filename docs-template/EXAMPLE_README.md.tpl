@@ -111,32 +111,67 @@ Alternatively, you can install Android Studio.
 
 **⚠️ Note:** The `-P 26` flag is currently required for building the example. If not included, you might get the error: `unable to find library -laaudio`.
 
-To build an Android app, you first need to build shared object files for the target architecture with `cargo-ndk`:
+1. Build shared object files for the target architecture with `cargo-ndk`:
 
-```sh
-cargo ndk build -t <target_name> -P 26 -o <project_path>/app/src/main/jniLibs
-```
+    ```sh
+    cargo ndk build -t <target_name> -P 26 -o <project_path>/app/src/main/jniLibs
+    ```
 
-For example, to compile to a 64-bit ARM platform:
+    *Setting the output path ensures the shared object files can be found in target-specific directories under `jniLibs` where the JNI can find them. See the `cargo-ndk` [README](https://crates.io/crates/cargo-ndk) for additional options.*
 
-```sh
-cargo ndk build -t aarch64-linux-android -P 26 -o ./android/app/src/main/jniLibs
-```
+    **Additional Info:**
 
-Setting the output path ensures the shared object files can be found in target-specific directories under `jniLibs` where the JNI can find them.
+    <details>
+    <summary>Example for arm64-v8a target_name</summary>
 
-See the `cargo-ndk` [README](https://crates.io/crates/cargo-ndk) for other options.
+    Build for `arm64-v8a`/`aarch64-linux-android` via:
 
-After this you can build it with `gradlew`:
+    ```sh
+    cargo ndk build -t arm64-v8a -P 26 -o ./android/app/src/main/jniLibs
+    ```
 
-```sh
-cd ./android
-./gradlew build
-```
+    </details>
 
-Or build it with Android Studio.
+    <details>
+    <summary>Get target_name from adb</summary>
 
-Then you can test it in your Android project.
+    Print the required `target_name` for a device connected via `adb` via:
+
+    ```sh
+    adb shell getprop ro.product.cpu.abi
+    ```
+
+    </details>
+
+2. Run Gradle via `./gradlew` or `gradlew.bat` to install the app:
+
+    Install the app via:
+
+    ```sh
+    cd ./android
+    ./gradlew installDebug
+    ```
+
+    *This step installs the app to a device connected via `adb`. Afterwards you can open the app on the device. You can also use Android Studio for this step.*
+
+    **Additional Info:**
+
+    <details>
+    <summary>Additional Gradle tasks</summary>
+
+    Only build the app via:
+
+    ```sh
+    ./gradlew build
+    ```
+
+    Print additional tasks via:
+
+    ```sh
+    ./gradlew tasks
+    ```
+
+    </details>
 
 #### Debugging
 
