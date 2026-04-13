@@ -220,10 +220,10 @@ You can follow the following steps to switch from [`GameActivity`](https://devel
     --- a/examples/mobile/android/gradle/libs.versions.toml
     +++ b/examples/mobile/android/gradle/libs.versions.toml
     [versions]
-    agp = "9.1.0"
+    agp = "9.1.1"
     appcompat = "1.7.1"
     core = "1.18.0"
-    -gamesActivity = "4.4.0" # Note: This must be compatible with `android-activity` crate used by bevy.
+    -gamesActivity = "4.4.1" # Note: This must be compatible with `android-activity` crate used by bevy.
     material = "1.13.0"
     coreKtx = "1.18.0"
 
