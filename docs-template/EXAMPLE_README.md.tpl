@@ -193,9 +193,9 @@ adb uninstall org.bevyengine.example
 
 **⚠️ Note:** If you are using `bevy_audio` the minimum supported Android API version is 26 (Android 8/Oreo).
 
-In its example, Bevy uses Android API 36 as `targetSdk` to be able to benefit from security and performance improvements. For backwards compatibility, the example specifies Android API 31 as `minSdk`. This approach is recommended in the [Android Developers documentation](https://developer.android.com/google/play/requirements/target-sdk#why-target).
+In its example, Bevy uses Android API 36 as `targetSdk` to be able to benefit from security and performance improvements. For backwards compatibility, the example specifies Android API 26 as `minSdk`. This approach is recommended in the [Android Developers documentation](https://developer.android.com/google/play/requirements/target-sdk#why-target).
 
-Bevy uses [`GameActivity`](https://developer.android.com/games/agdk/game-activity), which only works for Android API 31 and higher. If you want to use an older API, you need to switch to [`NativeActivity`](https://developer.android.com/reference/android/app/NativeActivity).
+Bevy uses [`GameActivity`](https://developer.android.com/games/agdk/game-activity), which only works for Android API 23 and higher. If you want to use an older API, you need to switch to [`NativeActivity`](https://developer.android.com/reference/android/app/NativeActivity).
 
 You can follow the following steps to switch from [`GameActivity`](https://developer.android.com/games/agdk/game-activity) to [`NativeActivity`](https://developer.android.com/reference/android/app/NativeActivity):
 
@@ -236,27 +236,18 @@ You can follow the following steps to switch from [`GameActivity`](https://devel
     ```
 
     </details>
-3. Change `minSdk` (optional) and remove unnecessary dependencies in `android/app/build.gradle.kts`.
+3. Remove unnecessary dependencies in `android/app/build.gradle.kts`.
     <details>
     <summary>Required Changes (Example)</summary>
 
     ```diff
     --- a/examples/mobile/android/app/build.gradle.kts
     +++ b/examples/mobile/android/app/build.gradle.kts
-        defaultConfig {
-            applicationId = "org.bevyengine.example"
-    -        minSdk = 31
-    +        minSdk = 26
-            targetSdk = 36
-            // NOTE: Increase by 1 on each release
-            versionCode = 1
-    --- a/examples/mobile/android/app/build.gradle.kts
-    +++ b/examples/mobile/android/app/build.gradle.kts
     dependencies {
         implementation(libs.appcompat)
         implementation(libs.core)
         implementation(libs.material)
-    -   implementation(libs.games.activity)
+    -    implementation(libs.games.activity)
         implementation(libs.core.ktx)
     }
     ```

@@ -42,13 +42,13 @@ class MainActivity : GameActivity() {
      * Hide system UI.
      */
     private fun hideSystemUi() {
-        val windowInsetsController =
-            WindowCompat.getInsetsController(window, window.decorView)
-
-        // Show bars if swiping
-        windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        // Hide both the status bar and the navigation bar.
-        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+        window.decorView.post {
+            val controller = WindowCompat.getInsetsController(window, window.decorView)
+            // Show bars if swiping
+            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            // Hide both the status bar and the navigation bar.
+            controller.hide(WindowInsetsCompat.Type.systemBars())
+        }
     }
 
     companion object {

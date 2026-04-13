@@ -24,7 +24,8 @@ android {
     // https://developer.android.com/reference/tools/gradle-api/9.1/com/android/build/api/dsl/DefaultConfig
     defaultConfig {
         applicationId = "org.bevyengine.example"
-        minSdk = 31
+        // NOTE: `minSdk` is 26 because this is the minimum supported by `bevy_audio`
+        minSdk = 26
         targetSdk = 36
         // NOTE: Increase by 1 on each release
         versionCode = 1
