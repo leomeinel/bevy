@@ -753,7 +753,7 @@ Alternatively, you can install Android Studio.
 
     </details>
 
-2. Run Gradle via `./gradlew` or `gradlew.bat` to install the app:
+2. Run Gradle via `./gradlew` (macOS, Linux, or BSD) or `gradlew.bat` (Windows) to install the app:
 
     Install the app via:
 
@@ -866,7 +866,7 @@ You can follow the following steps to switch from [`GameActivity`](https://devel
         implementation(libs.appcompat)
         implementation(libs.core)
         implementation(libs.material)
-    -    implementation(libs.games.activity)
+    -   implementation(libs.games.activity)
         implementation(libs.core.ktx)
     }
     ```
