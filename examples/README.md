@@ -719,7 +719,7 @@ Alternatively, you can install Android Studio.
 
 **⚠️ Note:** In order to run this example on `x86_64`, you may need to use the `--release` flag.
 
-**⚠️ Note:** The `-P 26` flag is currently required for building the example. If not included, you might get the error: `unable to find library -laaudio`.
+**⚠️ Note:** The `-P 26` flag is currently required for building the example. It sets the correct API level required by `bevy_audio`.
 
 1. Build shared object files for the target architecture with `cargo-ndk`:
 
