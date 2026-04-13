@@ -717,7 +717,7 @@ Alternatively, you can install Android Studio.
 
 #### Build & Run
 
-**⚠️ Note:** For running the example on `x86_64`, the `--release` flag is currently required.
+**⚠️ Note:** In order to run this example on `x86_64`, you may need to use the `--release` flag.
 
 **⚠️ Note:** The `-P 26` flag is currently required for building the example. If not included, you might get the error: `unable to find library -laaudio`.
 
