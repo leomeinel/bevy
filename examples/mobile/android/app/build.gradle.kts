@@ -2,10 +2,18 @@ plugins {
     alias(libs.plugins.android.application)
 }
 
+java {
+    // https://docs.gradle.org/current/userguide/toolchains.html
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 kotlin {
+    // https://kotlinlang.org/docs/gradle-compiler-options.html#all-compiler-options
     compilerOptions {
         languageVersion = org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_3
-        jvmToolchain(8)
+        jvmToolchain(17)
     }
 }
 
@@ -39,8 +47,8 @@ android {
     }
     // https://developer.android.com/reference/tools/gradle-api/9.1/com/android/build/api/dsl/CompileOptions
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     // https://developer.android.com/reference/tools/gradle-api/9.1/com/android/build/api/dsl/BuildFeatures
     buildFeatures {
