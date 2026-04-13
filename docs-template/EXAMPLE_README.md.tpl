@@ -47,6 +47,8 @@ git checkout v0.4.0
     - [Build & Run](#build--run)
     - [Debugging](#debugging)
     - [Old phones](#old-phones)
+      - [`GameActivity` vs `NativeActivity`](#gameactivity-vs-nativeactivity)
+      - [Migrating from `GameActivity` to `NativeActivity`](#migrating-from-gameactivity-to-nativeactivity)
   - [iOS](#ios)
     - [Setup](#setup-1)
     - [Build & Run](#build--run-1)
@@ -195,9 +197,28 @@ adb uninstall org.bevyengine.example
 
 In its example, Bevy uses Android API 36 as `targetSdk` to be able to benefit from security and performance improvements. For backwards compatibility, the example specifies Android API 26 as `minSdk`. This approach is recommended in the [Android Developers documentation](https://developer.android.com/google/play/requirements/target-sdk#why-target).
 
-Bevy uses [`GameActivity`](https://developer.android.com/games/agdk/game-activity), which only works for Android API 23 and higher. If you want to use an older API, you need to switch to [`NativeActivity`](https://developer.android.com/reference/android/app/NativeActivity).
+If you want to support older APIs, you can set a lower `minSdk`. You should however make sure that dependencies in `android/gradle/libs.versions.toml` support your API. You might also have to migrate to `NativeActivity`.
 
-You can follow the following steps to switch from [`GameActivity`](https://developer.android.com/games/agdk/game-activity) to [`NativeActivity`](https://developer.android.com/reference/android/app/NativeActivity):
+##### [`GameActivity`](https://developer.android.com/games/agdk/game-activity) vs [`NativeActivity`](https://developer.android.com/reference/android/app/NativeActivity)
+
+Bevy uses `GameActivity`, which only works for Android API 23 and higher.
+
+Quoting from [Android Developers](https://developer.android.com/games/agdk/game-activity), the major differences are as follows:
+
+> If you are already familiar with `NativeActivity`, the major differences between `GameActivity` and `NativeActivity` are as follows:
+>
+> - `GameActivity` renders into a [`SurfaceView`](https://developer.android.com/reference/android/view/SurfaceView), making it much easier for games to interact with other UI components.
+> - For touch and key input events, `GameActivity` has a completely new implementation with the [`android_input_buffer`](https://developer.android.com/reference/games/game-activity/structandroid/input-buffer) interface, separate from the [`InputQueue`](https://developer.android.com/reference/android/view/InputQueue) that NativeActivity uses.
+> - `GameActivity` is a derived class of `AppCompatActivity`, which lets you seamlessly use other Jetpack components. [`ActionBar`](https://developer.android.com/reference/android/app/ActionBar), [`Fragment`](https://developer.android.com/guide/fragments), and others are all available.
+> - `GameActivity` adds text input functionality by integrating [`the GameTextInput library`](https://developer.android.com/games/agdk/add-support-for-text-input).
+> - Apps derived from `GameActivity` are expected to build all three parts of C/C++ code into one library. On the other hand, `NativeActivity`'s JNI functions are a part of the framework (always loaded by OS). Hence, only the `native_app_glue` and application’s C/C++ code are expected to be built into one library.
+> - `NativeActivity` is a part of Android framework and follows its release cycle (typically yearly). GameActivity is a part of the Jetpack library, which has a much more frequent release cycle (typically biweekly); new features and bug fixes can arrive much more quickly.
+>
+> **Note:** We strongly recommend using **GameActivity** for new games and other C/C++ intensive applications. If you have an existing **NativeActivity** application, we recommend migrating to **GameActivity**.
+
+If you still want to use `NativeActivity`, please see the next section.
+
+##### Migrating from `GameActivity` to `NativeActivity`
 
 1. Replace `android-game-activity` feature with `android-native-activity` in `Cargo.toml`.
     <details>
