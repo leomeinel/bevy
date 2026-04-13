@@ -822,7 +822,7 @@ You can follow the following steps to switch from [`GameActivity`](https://devel
     ```
 
     </details>
-2. Remove unneeded dependencies in `android/gradle/libs.versions.toml`.
+2. Remove unnecessary dependencies in `android/gradle/libs.versions.toml`.
     <details>
     <summary>Required Changes (Example)</summary>
 
