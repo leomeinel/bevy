@@ -1,10 +1,10 @@
 package org.bevyengine.example
 
+import android.app.NativeActivity
 import android.os.Bundle
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.google.androidgamesdk.GameActivity
 
 /**
  * Load rust library and handle android specifics to integrate with it.
@@ -12,7 +12,7 @@ import com.google.androidgamesdk.GameActivity
  *
  * The library is loaded at class initialization and provided by jniLibs.
  */
-class MainActivity : GameActivity() {
+class MainActivity : NativeActivity() {
     /**
      * Enable edge to edge when the activity is starting.
      *
