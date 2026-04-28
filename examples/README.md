@@ -851,7 +851,7 @@ If you still want to use `NativeActivity`, please see the next section.
     --- a/examples/mobile/android/gradle/libs.versions.toml
     +++ b/examples/mobile/android/gradle/libs.versions.toml
     [versions]
-    agp = "9.1.1"
+    agp = "9.2.0"
     appcompat = "1.7.1"
     core = "1.18.0"
     -gamesActivity = "4.4.1" # Note: This must be compatible with `android-activity` crate used by bevy.
